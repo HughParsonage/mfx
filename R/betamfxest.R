@@ -36,8 +36,8 @@ betamfxest <- function(formula, data, atmean = TRUE, robust = FALSE, clustervar1
       data=na.omit(data)
     }
   }
-  fit <- betareg::betareg(formula, data=data, x=T, control = control, 
-                         link = "logit", link.phi = link.phi, type = type, ...)    
+  fit <- betareg::betareg(formula, data=data, x=TRUE, control = control, 
+                          link = "logit", link.phi = link.phi, type = type, ...)    
   
   # terms needed
   x1 = model.matrix(fit)
@@ -104,7 +104,7 @@ betamfxest <- function(formula, data, atmean = TRUE, robust = FALSE, clustervar1
   
   # calculte the disctrete change marginal effects and standard errors
   if(length(disch)!=0){
-    for(i in 1:length(disch)){
+    for(i in seq_along(disch)){
       if(atmean){
         disx0 = disx1 = xm
         disx1[disch[i],] = max(x1[,disch[i]])
@@ -126,7 +126,7 @@ betamfxest <- function(formula, data, atmean = TRUE, robust = FALSE, clustervar1
       }
     }
   } 
-  mfx$discretechgvar = ifelse(rownames(mfx) %in% disch, 1, 0)
+  mfx$discretechgvar = as.numeric(rownames(mfx) %in% disch)
   output = list(fit=fit, mfx=mfx)
   return(output)
 }
