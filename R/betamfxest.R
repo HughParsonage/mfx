@@ -1,5 +1,3 @@
-#' @param ... Arguments passed to betareg
-
 betamfxest <- function(formula, data, atmean = TRUE, robust = FALSE, clustervar1 = NULL, 
                       clustervar2 = NULL, control = betareg.control(), 
                       link.phi = NULL, type = "ML", ...){
