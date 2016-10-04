@@ -1,7 +1,9 @@
+#' @param Arguments passed to betareg
+
 betamfxest <-
 function(formula, data, atmean = TRUE, robust = FALSE, clustervar1 = NULL, 
                       clustervar2 = NULL, control = betareg.control(), 
-                      link.phi = NULL, type = "ML"){
+                      link.phi = NULL, type = "ML", ...){
   
   if(is.null(formula)){
     stop("formula is missing")
@@ -36,7 +38,7 @@ function(formula, data, atmean = TRUE, robust = FALSE, clustervar1 = NULL,
     }
   }
   fit = betareg(formula, data=data, x=T, control = control, 
-                link = "logit", link.phi = link.phi, type = type)    
+                link = "logit", link.phi = link.phi, type = type, ...)    
   
   # terms needed
   x1 = model.matrix(fit)
