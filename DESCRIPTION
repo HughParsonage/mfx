@@ -1,7 +1,7 @@
 Package: mfx
 Type: Package
 Title: Marginal Effects, Odds Ratios and Incidence Rate Ratios for GLMs
-Version: 1.1
+Version: 1.1.1
 Date: 2013-12-12
 Author: Alan Fernihough
 Maintainer: Alan Fernihough <alan.fernihough@gmail.com>
