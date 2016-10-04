@@ -1,7 +1,6 @@
-#' @param Arguments passed to betareg
+#' @param ... Arguments passed to betareg
 
-betamfxest <-
-function(formula, data, atmean = TRUE, robust = FALSE, clustervar1 = NULL, 
+betamfxest <- function(formula, data, atmean = TRUE, robust = FALSE, clustervar1 = NULL, 
                       clustervar2 = NULL, control = betareg.control(), 
                       link.phi = NULL, type = "ML", ...){
   
@@ -37,8 +36,8 @@ function(formula, data, atmean = TRUE, robust = FALSE, clustervar1 = NULL,
       data=na.omit(data)
     }
   }
-  fit = betareg(formula, data=data, x=T, control = control, 
-                link = "logit", link.phi = link.phi, type = type, ...)    
+  fit <- betareg::betareg(formula, data=data, x=T, control = control, 
+                         link = "logit", link.phi = link.phi, type = type, ...)    
   
   # terms needed
   x1 = model.matrix(fit)
@@ -49,7 +48,11 @@ function(formula, data, atmean = TRUE, robust = FALSE, clustervar1 = NULL,
   be = as.matrix(na.omit(coef(fit)))[1:NROW(xm)]
   k1 = NROW(xm)
   xb = t(xm) %*% be
-  fxb = ifelse(atmean==TRUE, plogis(xb)*(1-plogis(xb)), mean(plogis(x1 %*% be)*(1-plogis(x1 %*% be))))  
+  fxb = if (atmean) {
+    plogis(xb)*(1-plogis(xb))
+  } else {
+    mean(plogis(x1 %*% be)*(1-plogis(x1 %*% be)))
+  }
   # get variances
   vcv = vcov(fit)[1:NROW(xm),1:NROW(xm)]
   
@@ -66,7 +69,7 @@ function(formula, data, atmean = TRUE, robust = FALSE, clustervar1 = NULL,
     }
   }
   
-  if(robust==FALSE & is.null(clustervar1)==FALSE){
+  if(!robust && !is.null(clustervar1)){
     if(is.null(clustervar2)){
       vcv = clusterVCV(data=data, fm=fit, cluster1=clustervar1,cluster2=NULL)[1:NROW(xm),1:NROW(xm)]
     } else {
